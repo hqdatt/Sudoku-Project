@@ -28,7 +28,7 @@ class Button:
     def check_click(self):
         mouse_pos = pygame.mouse.get_pos()
         left_click = pygame.mouse.get_pressed()[0]
-        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (150, 69))
+        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (150, 50))
         if left_click and button_rect.collidepoint(mouse_pos) and self.enabled:
             return True
         else:
