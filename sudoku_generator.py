@@ -230,3 +230,6 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
+for i in generate_sudoku(9, 30):
+    print(i)
