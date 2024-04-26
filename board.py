@@ -71,8 +71,16 @@ class Board:
             for cell in row:
                 if cell.value == 0:
                     return False
-        return True        
-
+        return True
+    
+    def reset_board(self):
+        for row in self.cells:
+            for cell in row:
+                # Reset editable cells to 0 and clear sketch values
+                if cell.editable:
+                    cell.set_cell_value(0)
+                    cell.set_sketched_value(0)
+                    
     def update_board(self):
         ...
 
