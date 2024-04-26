@@ -6,28 +6,36 @@ from cell import Cell
 from board import Board
 from button import Button
 
-# Initialize Pygame
-pygame.init()
-
-WIDTH, HEIGHT = 540, 669
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Sudoku")
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-
-# Set up font
-font = pygame.font.SysFont(None, 36)
-smallfont = pygame.font.SysFont('Corbel', 35)
-
-board = Board(540, 669, screen, "Easy")
-
-# Main game loop
-selected_row, selected_col = None, None
+main_menu = True
+game_screen = False
+win_screen = False
+lose_screen = False
+easy = False
+medium = False
+hard = False
+board = None
 running = True
-while running:
-    # Handle events
+selected_row = None
+selected_col = None
+resetter = False
+
+def actual_game(screen, board):
+    global running
+    global selected_row
+    global selected_col
+    global win_screen
+    global lose_screen
+    global game_screen
+    global main_menu
+
+    button_font = pygame.font.Font(None, 40)
+    screen.fill((co.WHITE))
+    board.draw()
+
+    reset_button = Button("Reset", 20, 565, True, screen, button_font)
+    restart_button = Button("Restart", 190, 565, True, screen, button_font)
+    exit_button = Button("Exit", 360, 565, True, screen, button_font)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -75,22 +83,28 @@ while running:
                     if selected_col < 8:
                         new_selected_col += 1
 
-    # Check if the board is full and correct
     if board.is_full():
         if board.check_board():
             print("Sudoku is correct")
+            game_screen = False
+            win_screen = True
         else:
             print("Incorrect Sudoku")
+            game_screen = False
+            lose_screen = True
 
-    # Fill the screen with white
-    screen.fill(WHITE)
+    global resetter
 
-    board.draw()
-    reset_button = Button("Reset", 20, 569, True, screen, smallfont)
-    restart_button = Button("Restart", 200, 569, True, screen, smallfont)
-    quit_button = Button("Quit", 380, 569, True, screen, smallfont)
+    if reset_button.check_click():
+        board.reset_board()
+    if restart_button.check_click():
+        resetter = True
+        game_screen = False
+        main_menu = True
+    if exit_button.check_click():
+        pygame.quit()
+        running = False
 
-    # Update the display
     pygame.display.flip()
 
 def draw_game_start(screen):
@@ -109,30 +123,81 @@ def draw_game_start(screen):
     title_rectangle2 = title_surface.get_rect(center=(co.WIDTH // 2 + 60, co.HEIGHT // 2 + 100))
     screen.blit(title_surface2, title_rectangle2)
 
-    button_easy = button_font.render("easy", 0, (255, 255, 255))
-    easy_surface = pygame.Surface((button_easy.get_size()[0] + 20, button_easy.get_size()[1] + 20))
-    easy_surface.fill((0, 0, 255))
-    easy_rectangle = easy_surface.get_rect(center=(co.WIDTH // 2 - 150, co.HEIGHT // 2 + 150))
-    screen.blit(easy_surface, easy_rectangle)
-    easy_rectangle = button_easy.get_rect(center=(co.WIDTH // 2 - 150, co.HEIGHT // 2 + 150))
-    screen.blit(button_easy, easy_rectangle)
+    easy_button = Button("Easy", 20, 460, True, screen, button_font)
+    medium_button = Button("Medium", 190, 460, True, screen, button_font)
+    hard_button = Button("Hard", 360, 460, True, screen, button_font)
 
-    button_medium = button_font.render("Medium", 0, (255, 255, 255))
-    medium_surface = pygame.Surface((button_medium.get_size()[0] + 20, button_medium.get_size()[1] + 20))
-    medium_surface.fill((0, 0, 255))
-    medium_rectangle = medium_surface.get_rect(center=(co.WIDTH // 2, co.HEIGHT // 2 + 150))
-    screen.blit(medium_surface, medium_rectangle)
-    medium_rectangle = button_medium.get_rect(center=(co.WIDTH // 2, co.HEIGHT // 2 + 150))
-    screen.blit(button_medium, medium_rectangle)
+    global main_menu 
+    global game_screen  
+    global easy
+    global hard
+    global medium
+    if easy_button.check_click():
+        screen.fill((co.WHITE))
+        main_menu = False
+        game_screen = True
+        easy = True
+        medium = False
+        hard = False
+    if medium_button.check_click():
+        screen.fill((co.WHITE))
+        main_menu = False
+        game_screen = True
+        medium = True
+        hard = False
+        easy = False
+    if hard_button.check_click():
+        screen.fill((co.WHITE))
+        main_menu = False
+        game_screen = True
+        hard = True
+        medium = False
+        easy = False
+    pygame.display.flip()
 
-    button_hard = button_font.render("Hard", 0, (255, 255, 255))
-    hard_surface = pygame.Surface((button_hard.get_size()[0] + 20, button_hard.get_size()[1] + 20))
-    hard_surface.fill((0, 0, 255))
-    hard_rectangle = hard_surface.get_rect(center=(co.WIDTH // 2 + 150, co.HEIGHT // 2 + 150))
-    screen.blit(hard_surface, hard_rectangle)
-    hard_rectangle = button_hard.get_rect(center=(co.WIDTH // 2 + 150, co.HEIGHT // 2 + 150))
-    screen.blit(button_hard, hard_rectangle)
+# Initialize Pygame
+def main():
+    # # Main game loop
 
-# Quit Pygame
-pygame.quit()
-sys.exit()
+    pygame.init()
+    screen = pygame.display.set_mode([co.WIDTH, co.HEIGHT])
+    pygame.display.set_caption("Sudoku")
+
+    board = None
+    global running
+    global resetter
+    while running:
+        if main_menu:
+            draw_game_start(screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+        if game_screen:
+            if board == None or resetter:
+                resetter = False
+                if easy:
+                    board = Board(co.WIDTH, co.HEIGHT, screen, "Easy")
+                elif medium:
+                    board = Board(co.WIDTH, co.HEIGHT, screen, "Medium")
+                elif hard:
+                    board = Board(co.WIDTH, co.HEIGHT, screen, "Hard")
+            actual_game(screen, board)
+        if win_screen:
+            screen.fill((co.GREEN))
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+        if lose_screen:
+            screen.fill((co.RED))
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+
+                
+
+
+if __name__ == "__main__":
+    main()
