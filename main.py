@@ -4,11 +4,12 @@ import constants as co
 import sudoku_generator
 from cell import Cell
 from board import Board
+from button import Button
 
 # Initialize Pygame
 pygame.init()
 
-WIDTH, HEIGHT = 540, 590
+WIDTH, HEIGHT = 540, 669
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Sudoku")
 
@@ -18,8 +19,9 @@ RED = (255, 0, 0)
 
 # Set up font
 font = pygame.font.SysFont(None, 36)
+smallfont = pygame.font.SysFont('Corbel', 35)
 
-board = Board(540, 590, screen, "Easy")
+board = Board(540, 669, screen, "Easy")
 
 # Main game loop
 selected_row, selected_col = None, None
@@ -47,7 +49,7 @@ while running:
                 if cell.editable:
                     if event.unicode.isdigit() and int(event.unicode) in range(1, 10):
                         cell.set_sketched_value(int(event.unicode))
-                    elif event.key == pygame.K_SPACE or event.key == pygame.K_DOWN:
+                    elif event.key == pygame.K_SPACE or event.key == pygame.K_BACKSPACE:
                         cell.set_sketched_value(0)
                         cell.set_cell_value(0)
                     elif event.key == pygame.K_RETURN:
@@ -84,6 +86,9 @@ while running:
     screen.fill(WHITE)
 
     board.draw()
+    reset_button = Button("Reset", 20, 569, True, screen, smallfont)
+    restart_button = Button("Restart", 200, 569, True, screen, smallfont)
+    quit_button = Button("Quit", 380, 569, True, screen, smallfont)
 
     # Update the display
     pygame.display.flip()
