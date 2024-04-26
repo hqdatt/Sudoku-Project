@@ -80,7 +80,7 @@ class Board:
                 if cell.editable:
                     cell.set_cell_value(0)
                     cell.set_sketched_value(0)
-                    
+
     def update_board(self):
         ...
 
@@ -96,17 +96,26 @@ class Board:
         return True
 
     def valid_in_row(self, row, num) -> bool:
-        return num not in self.board[row]
+        count = 0
+        for i in self.board[row]:
+            if i == num:
+                count += 1
+        return count == 1
 
     def valid_in_col(self, col, num) -> bool:
-        return all(row[col] != num for row in self.board)
+        count = 0
+        for row in range(9):
+            if self.board[row][col] == num:
+                count += 1
+        return count == 1
 
     def valid_in_box(self, row_start, col_start, num) -> bool:
-        return all(
-            self.board[row][col] != num
-            for row in range(row_start, row_start + 3)
-            for col in range(col_start, col_start + 3)
-        )
+        count = 0
+        for row in range(row_start, row_start + 3):
+            for col in range(col_start, col_start + 3):
+                if self.board[row][col] == num:
+                    count += 1
+        return count == 1
     
     def is_valid(self, row, col, num) -> bool:
         return (
