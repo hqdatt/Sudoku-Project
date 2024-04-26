@@ -15,7 +15,7 @@ class Board:
         elif self.difficulty == "Hard":
             self.board = sudoku_generator.generate_sudoku(9, 50)
         elif self.difficulty == "Test":
-            self.board = sudoku_generator.generate_sudoku(9, 3)
+            self.board = sudoku_generator.generate_sudoku(9, 1)
         self.cells = [[Cell(self.board[row][col], row, col, screen) for col in range(9)] for row in range(9)]
     
     def draw(self):
