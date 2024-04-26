@@ -66,7 +66,7 @@ def actual_game(screen, board):
                         cell.set_sketched_value(0)
                         cell.set_cell_value(0)
                         board.board[selected_row][selected_col] = 0
-                    elif event.key == pygame.K_RETURN:
+                    elif event.key == pygame.K_RETURN and cell.sketched_value != 0:
                         cell.set_cell_value(cell.sketched_value)
                         board.board[selected_row][selected_col] = cell.sketched_value
                         cell.set_sketched_value(0)
