@@ -57,6 +57,31 @@ def actual_game(screen, board):
 
         elif event.type == pygame.KEYDOWN:
             if selected_row is not None and selected_col is not None:
+                if event.key == pygame.K_UP:
+                    if selected_row > 0:
+                        new_selected_row = selected_row - 1
+                        board.cells[selected_row][selected_col].deselect()
+                        selected_row = new_selected_row
+                        board.cells[selected_row][selected_col].select()
+                elif event.key == pygame.K_DOWN:
+                    if selected_row < 8:
+                        new_selected_row = selected_row + 1
+                        board.cells[selected_row][selected_col].deselect()
+                        selected_row = new_selected_row
+                        board.cells[selected_row][selected_col].select()
+                elif event.key == pygame.K_LEFT:
+                    if selected_col > 0:
+                        new_selected_col = selected_col - 1
+                        board.cells[selected_row][selected_col].deselect()
+                        selected_col = new_selected_col
+                        board.cells[selected_row][selected_col].select()
+                elif event.key == pygame.K_RIGHT:
+                    if selected_col < 8:
+                        new_selected_col = selected_col + 1
+                        board.cells[selected_row][selected_col].deselect()
+                        selected_col = new_selected_col
+                        board.cells[selected_row][selected_col].select()
+
                 cell = board.cells[selected_row][selected_col]
                 if cell.editable:
                     if event.unicode.isdigit() and int(event.unicode) in range(1, 10):
@@ -70,25 +95,6 @@ def actual_game(screen, board):
                         cell.set_cell_value(cell.sketched_value)
                         board.board[selected_row][selected_col] = cell.sketched_value
                         cell.set_sketched_value(0)
-
-                elif event.key == pygame.K_UP:
-                    if selected_row > 0:
-                        new_selected_row -= 1
-                        board.cells[selected_row][selected_col].deselect()
-                        selected_row = new_selected_row
-                        board.cells[selected_row][selected_col].select()
-                elif event.key == pygame.K_DOWN:
-                    if selected_row < 8:
-                        new_selected_row += 1
-                        board.cells[selected_row][selected_col].deselect()
-                        selected_row = new_selected_row
-                        board.cells[selected_row][selected_col].select()
-                elif event.key == pygame.K_LEFT:
-                    if selected_col > 0:
-                        new_selected_col -= 1
-                elif event.key == pygame.K_RIGHT:
-                    if selected_col < 8:
-                        new_selected_col += 1
 
     if board.is_full():
         if board.check_board():
