@@ -19,6 +19,10 @@ selected_row = None
 selected_col = None
 resetter = False
 
+def draw_text(text, font, text_col, x, y, screen):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+
 def actual_game(screen, board):
     global running
     global selected_row
@@ -162,6 +166,8 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode([co.WIDTH, co.HEIGHT])
     pygame.display.set_caption("Sudoku")
+    # Arial font
+    arial_font = pygame.font.SysFont("arialblack", 40)
 
     board = None
     global running
@@ -183,13 +189,23 @@ def main():
                     board = Board(co.WIDTH, co.HEIGHT, screen, "Hard")
             actual_game(screen, board)
         if win_screen:
-            screen.fill((co.GREEN))
+            screen.fill((255, 255, 255))
+            gator_win_img = pygame.image.load('Sudoku-Project/Gator_winner.png').convert_alpha()
+            gator_win_img = pygame.transform.scale(gator_win_img, (80 * 3, 80 * 3))
+            screen.blit(gator_win_img, (275, 20))
+            draw_text("Game Won!", arial_font, (0, 0, 0), 300, 300, screen)
+            #Add exit button here on coords x = (width - 150) / 2 and y = 500
             pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
         if lose_screen:
-            screen.fill((co.RED))
+            screen.fill((255, 255, 255))
+            gator_lose_img = pygame.image.load('Sudoku-Project/Gator_loser.png').convert_alpha()
+            gator_lose_img = pygame.transform.scale(gator_lose_img, (80 * 3, 80 * 3))
+            screen.blit(gator_lose_img, (275, 20))
+            draw_text("Game Over :(", arial_font, (0, 0, 0), 300, 300)
+            #Add restart button here on coords x = (width - 150) / 2 and y = 500
             pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
