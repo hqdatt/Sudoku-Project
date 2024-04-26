@@ -12,14 +12,18 @@ class Button:
 
     def draw(self):
         button_text = self.font.render(self.text, True, 'black')
-        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (150, 69))
+        button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (150, 50))
         if self.check_click():
             pygame.draw.rect(self.screen, 'dark gray', button_rect, 0, 5)
         else:
             pygame.draw.rect(self.screen, 'light grey', button_rect, 0, 5)
 
         pygame.draw.rect(self.screen, 'black', button_rect, 2, 5)
-        self.screen.blit(button_text, (self.x_pos+18, self.y_pos+15))
+        
+        text_x = self.x_pos + (button_rect.width - button_text.get_width()) / 2
+        text_y = self.y_pos + (button_rect.height - button_text.get_height()) / 2
+
+        self.screen.blit(button_text, (text_x, text_y))
 
     def check_click(self):
         mouse_pos = pygame.mouse.get_pos()
