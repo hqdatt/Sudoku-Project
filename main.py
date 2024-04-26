@@ -1,5 +1,6 @@
 import pygame
 import sys
+import constants as co
 import sudoku_generator
 from cell import Cell
 from board import Board
@@ -92,6 +93,45 @@ while running:
     # Update the display
     pygame.display.flip()
 
+def draw_game_start(screen):
+    start_title_font = pygame.font.SysFont(None, 70)
+    button_font = pygame.font.Font(None, 40)
+
+    screen.fill((255, 255, 255))
+
+    title_surface = start_title_font.render("Welcome to Sudoku", 0, (0, 0, 0))
+    title_rectangle = title_surface.get_rect(center=(co.WIDTH // 2, co.HEIGHT // 2 - 150))
+    screen.blit(title_surface, title_rectangle)
+
+    start_title_font = pygame.font.SysFont('lato', 50)
+
+    title_surface2 = start_title_font.render("Select Game Mode:", 0, (0, 0, 0))
+    title_rectangle2 = title_surface.get_rect(center=(co.WIDTH // 2 + 60, co.HEIGHT // 2 + 100))
+    screen.blit(title_surface2, title_rectangle2)
+
+    button_easy = button_font.render("easy", 0, (255, 255, 255))
+    easy_surface = pygame.Surface((button_easy.get_size()[0] + 20, button_easy.get_size()[1] + 20))
+    easy_surface.fill((0, 0, 255))
+    easy_rectangle = easy_surface.get_rect(center=(co.WIDTH // 2 - 150, co.HEIGHT // 2 + 150))
+    screen.blit(easy_surface, easy_rectangle)
+    easy_rectangle = button_easy.get_rect(center=(co.WIDTH // 2 - 150, co.HEIGHT // 2 + 150))
+    screen.blit(button_easy, easy_rectangle)
+
+    button_medium = button_font.render("Medium", 0, (255, 255, 255))
+    medium_surface = pygame.Surface((button_medium.get_size()[0] + 20, button_medium.get_size()[1] + 20))
+    medium_surface.fill((0, 0, 255))
+    medium_rectangle = medium_surface.get_rect(center=(co.WIDTH // 2, co.HEIGHT // 2 + 150))
+    screen.blit(medium_surface, medium_rectangle)
+    medium_rectangle = button_medium.get_rect(center=(co.WIDTH // 2, co.HEIGHT // 2 + 150))
+    screen.blit(button_medium, medium_rectangle)
+
+    button_hard = button_font.render("Hard", 0, (255, 255, 255))
+    hard_surface = pygame.Surface((button_hard.get_size()[0] + 20, button_hard.get_size()[1] + 20))
+    hard_surface.fill((0, 0, 255))
+    hard_rectangle = hard_surface.get_rect(center=(co.WIDTH // 2 + 150, co.HEIGHT // 2 + 150))
+    screen.blit(hard_surface, hard_rectangle)
+    hard_rectangle = button_hard.get_rect(center=(co.WIDTH // 2 + 150, co.HEIGHT // 2 + 150))
+    screen.blit(button_hard, hard_rectangle)
 
 # Quit Pygame
 pygame.quit()

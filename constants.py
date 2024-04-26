@@ -1,0 +1,2 @@
+WIDTH = 540
+HEIGHT = 669
