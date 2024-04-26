@@ -6,7 +6,6 @@ from cell import Cell
 from board import Board
 from button import Button
 
-<<<<<<< HEAD
 main_menu = True
 game_screen = False
 win_screen = False
@@ -95,26 +94,6 @@ def actual_game(screen, board):
             lose_screen = True
 
     global resetter
-=======
-# Initialize Pygame
-pygame.init()
-
-WIDTH, HEIGHT = 540, 669
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Sudoku")
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-
-# Set up font
-font = pygame.font.SysFont(None, 36)
-smallfont = pygame.font.SysFont('Corbel', 35)
-
-
-def display_game_screen(board):
-    screen.fill(WHITE)
->>>>>>> 09d64f5e8e054958db50a9f02798ae675765c2a5
 
     if reset_button.check_click():
         board.reset_board()
@@ -128,7 +107,7 @@ def display_game_screen(board):
 
     pygame.display.flip()
 
-def display_main_menu():
+def display_main_menu(screen):
     start_title_font = pygame.font.SysFont(None, 70)
     button_font = pygame.font.Font(None, 40)
 
@@ -180,7 +159,6 @@ def display_main_menu():
 def main():
     # # Main game loop
 
-<<<<<<< HEAD
     pygame.init()
     screen = pygame.display.set_mode([co.WIDTH, co.HEIGHT])
     pygame.display.set_caption("Sudoku")
@@ -190,7 +168,7 @@ def main():
     global resetter
     while running:
         if main_menu:
-            draw_game_start(screen)
+            display_main_menu(screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -213,122 +191,9 @@ def main():
         if lose_screen:
             screen.fill((co.RED))
             pygame.display.flip()
-=======
-    pygame.display.flip()
-
-def main():
-    current_scene = "main_menu"
-
-    selected_row, selected_col = None, None
-    running = True
-    while running:
-        if current_scene == "game_screen":
-            display_game_screen(board)
-
->>>>>>> 09d64f5e8e054958db50a9f02798ae675765c2a5
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-<<<<<<< HEAD
-
-                
-
-
 if __name__ == "__main__":
     main()
-=======
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    print(mouse_x, mouse_y)
-                    if mouse_x < 540 and mouse_y < 540:
-                        new_selected_row, new_selected_col = board.click(mouse_x, mouse_y)
-
-                        if (new_selected_row, new_selected_col) != (selected_row, selected_col):
-                            if selected_row is not None and selected_col is not None:
-                                board.cells[selected_row][selected_col].deselect()
-                            selected_row, selected_col = new_selected_row, new_selected_col
-                            board.cells[selected_row][selected_col].select()
-                    
-                    #Reset Button
-                    elif 20 <= mouse_x <= 170 and 570 <= mouse_y <= 620:
-                        print("Reset Button clicked")
-                        board.reset_board()
-
-                    #Restart Button
-                    elif 200 <= mouse_x <= 350 and 570 <= mouse_y <= 620:
-                        current_scene = "main_menu"
-
-                    #Quit Button
-                    elif 380 <= mouse_x <= 530 and 570 <= mouse_y <= 620:
-                        running = False
-
-                elif event.type == pygame.KEYDOWN:
-                    new_selected_row, new_selected_col = selected_row, selected_col  # Initialize new_selected_row and new_selected_col
-                    
-                    if selected_row is not None and selected_col is not None:
-                        cell = board.cells[selected_row][selected_col]
-                        if cell.editable:
-                            if event.unicode.isdigit() and int(event.unicode) in range(1, 10):
-                                cell.set_sketched_value(int(event.unicode))
-                            elif event.key == pygame.K_SPACE or event.key == pygame.K_BACKSPACE:
-                                cell.set_sketched_value(0)
-                                cell.set_cell_value(0)
-                            elif event.key == pygame.K_RETURN:
-                                cell.set_cell_value(cell.sketched_value)
-                                cell.set_sketched_value(0)
-
-                        elif event.key == pygame.K_UP:
-                            if selected_row > 0:
-                                new_selected_row -= 1
-                        elif event.key == pygame.K_DOWN:
-                            if selected_row < 8:
-                                new_selected_row += 1
-                        elif event.key == pygame.K_LEFT:
-                            if selected_col > 0:
-                                new_selected_col -= 1
-                        elif event.key == pygame.K_RIGHT:
-                            if selected_col < 8:
-                                new_selected_col += 1
-                
-
-            # Check if the board is full and correct
-            if board.is_full():
-                if board.check_board():
-                    print("Sudoku is correct")
-                else:
-                    print("Incorrect Sudoku")
-
-
-        elif current_scene == "main_menu":
-            display_main_menu()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    print(mouse_x, mouse_y)
-
-                    #Easy Button
-                    if 80 <= mouse_x <= 160 and 460 <= mouse_y <= 508:
-                        board = Board(540, 669, screen, "Easy")
-                        current_scene = "game_screen"
-
-                    #Medium Button
-                    elif 210 <= mouse_x <= 330 and 460 <= mouse_y <= 508:
-                        board = Board(540, 669, screen, "Medium")
-                        current_scene = "game_screen"
-
-                    #Hard Button
-                    elif 380 <= mouse_x <= 460 and 460 <= mouse_y <= 508:
-                        board = Board(540, 669, screen, "Hard")
-                        current_scene = "game_screen"
-
-if __name__ == "__main__":
-    main()
-    
-# Quit Pygame
-pygame.quit()
-sys.exit()
->>>>>>> 09d64f5e8e054958db50a9f02798ae675765c2a5
